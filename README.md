@@ -8,7 +8,7 @@ Si quieres correr el codigo por tu cuenta, tienes dos opciones:
 * [Poetry](https://python-poetry.org/)
 #### Si vas a correr sin poetry:
 * [Python 3.11](https://www.python.org/downloads/release/python-3110/)
-* All the dependencies listed in [`pyproject.toml`](pyproject.toml).
+* Tienes que instalar todas las dependecias listadas en:  [`pyproject.toml`](pyproject.toml).
 
 ## Ejecucion:
 #### Si vas a ejecutarlo con poetry:
