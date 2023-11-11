@@ -12,9 +12,9 @@ Si quieres correr el codigo por tu cuenta, tienes dos opciones:
 
 ## Ejecucion:
 #### Si vas a ejecutarlo con poetry:
-1. **En la terminal escribir `poetry lock`.** (Esto crea el venv)
-2. **En la terminal escribir `poetry install`.** (Esto instala las dependencias en el venv)
-3. **Añade el venv/lock como interprete dep projecto IDE.** 
+1. En la terminal escribir `poetry lock`. (Esto crea el venv)
+2. En la terminal escribir `poetry install`. (Esto instala las dependencias en el venv)
+3. Añade el venv/lock como interprete dep projecto IDE.
 > Para el caso de Pycharm: `Settings`→`Project`→`Python Interpreter`→`Add Interpreter`->`Add local Interpreter`-> `Poetry enviroment` ->`Existing enviroment`->Selecciona el `.lock` file.
 
 #### Si vas a ejecutarlo sin poetry:
