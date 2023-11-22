@@ -66,15 +66,19 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
 
         posCol = 0  # columna pivote
         print(" Calculo de CbvB^{-1}A-C: \n")
+        #print(f"test, \n"
+        #      f"n={n}, nbasicVars[]={noBasicVars}")
         for i in range(0, n):
             if noBasicVars[i] < n:
 
                 minNum[i] = (
                         np.dot(cb, matrizAu[:, int(noBasicVars[i])]) - objConv[i]
                 )  # Valores en la fila de Z
-                print(f"Evaluacion de X{i+1}: {cb}*{matrizAu[:, int(noBasicVars[i])]} ={minNum[i]}")
+                print(f"Evaluacion de X{i+1}: {cb}*{matrizAu[:, int(noBasicVars[i])]} - {objConv[i]}={minNum[i]}")
             else:
                 minNum[i] = np.dot(cb, matrizAu[:, int(noBasicVars[i])])
+
+                print(f"Evaluacion de X{i + 1}: {cb}*{matrizAu[:, int(noBasicVars[i])]} ={minNum[i]}")
 
             if i > 0:
                 if minNum[posCol] > minNum[i]:
@@ -87,18 +91,10 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
         else:
             print(f"El menor numero es: {min(minNum)}. Como no es negativo, llegamos al optimo")
             break
-        #for i in minNum:
-        #    if i < 0:
-        #        neg = True
-        #        break
-        #
-        #if neg == False:
-        #    break
+
 
         dividendos = np.dot(BInv, indepConv)  # se calcula las variables independientes
-        divisores = np.dot(
-            BInv, matrizAu[:, posCol]
-        )  # se calcula los divisores de las variables independientes
+        divisores = np.dot(BInv, matrizAu[:, posCol])  # se calcula los divisores de las variables independientes
         newIndep = np.zeros(m)  # se divide y se busca el numero positivo mas pequeño
         contNeg = 0
         for i in range(0, m):
@@ -112,9 +108,7 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
             else:
                 newIndep[i] = dividendos[i] / divisores[i]
 
-        if (
-                contNeg == m
-        ):  # si no existe un pivote significa que el problema no tiene solucion
+        if contNeg == m:  # si no existe un pivote significa que el problema no tiene solucion
             print("No existe solucion para el sistema")
             break
 
@@ -126,7 +120,9 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
                 posRow = i
 
         noBasicVars[posCol] = basicVars[posRow]  # sale la vieja variable basica
+        print(f"Va a salir la vieja variable basica: {noBasicVars[posCol]}")
         basicVars[posRow] = vars[posCol]  # se almacena la nueva variable basica
+        print(f"Va a almacenar la nueva variable báscia: {basicVars[posRow]}")
 
         for row in range(0, m):
             for col in range(0, m):
@@ -237,6 +233,7 @@ def declaración_problema(*args) -> None:
 
 
         simplex(restrics, indep, obj, restricsTypes, minmax)
+
 
 
 if __name__ == "__main__":
