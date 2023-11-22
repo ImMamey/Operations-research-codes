@@ -1,5 +1,5 @@
 import numpy as np
-s
+
 
 # TODO: imprimir todas las iteraciones dentro de simplex, revisar por que el ejemplo de la lamina no da igual.
 
@@ -25,20 +25,23 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
     indepConv = np.array(indep)
     objConv = np.array(obj)
 
-    (m, n,) = (
-        restricConv.shape)  # m=numero de filas (numero de restricciones), n=numero de columnas (numero de variables)
+    (m, n,) = (restricConv.shape)  # m=numero de filas (numero de restricciones), n=numero de columnas (numero de variables)
     matrizAu = np.hstack((restricConv, np.eye(m)))  # matriz aumentada
-    objAu = np.hstack((objConv, np.zeros(
-        m)))  # vector con los valores de la funcion objetivo (las variables de hogura y artificiales valen cero)
+    objAu = np.hstack((objConv, np.zeros(m)))  # vector con los valores de la funcion objetivo (las variables de hogura y artificiales valen cero)
+    print(f"La matriz aumentada es: \n{matrizAu}\n")
 
     vars = np.zeros(m + n)  # vector con numero de variables totales
     for i in range(0, m + n):
         vars[i] = i
 
-    basicVars = np.zeros(
-        m)  # vector con numero de variables basicas totales (es igual a la cantidad de variables de holgura y artificiales)
-    noBasicVars = np.zeros(
-        n)  # vector con numero de variables no basicas totales (igual a la cantidad de variables normales)
+    basicVars = np.zeros(m)  # vector con numero de variables basicas totales (es igual a la cantidad de variables de holgura y artificiales)
+    noBasicVars = np.zeros(n)  # vector con numero de variables no basicas totales (igual a la cantidad de variables normales)
+
+    """
+    Siguiente for loop guarda las posiciones e las variables basicas y no basicas
+    m= filas
+    n= columnas
+    """
     for i in range(0, m):
         if i < n:
             noBasicVars[i] = i  # en ambos vectores se guardan las posiciones de las variables
@@ -49,15 +52,27 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
     minNum = np.zeros(n)
     BInv = np.linalg.inv(np.eye(m))
 
+    iteracion=0
     while True:
+        iteracion=iteracion+1
+        print(f"═══════════Iteracion #{iteracion}═══════════")
+        print(
+            f"Binversa = \n {BInv}\n"
+        )
         cb = np.dot(numBasic, BInv)
+        print("Calculo de cb=\n"
+              f"{numBasic}*\n{BInv}\n"
+              f"cb={cb}")
 
         posCol = 0  # columna pivote
+        print(" Calculo de CbvB^{-1}A-C: \n")
         for i in range(0, n):
             if noBasicVars[i] < n:
+
                 minNum[i] = (
                         np.dot(cb, matrizAu[:, int(noBasicVars[i])]) - objConv[i]
                 )  # Valores en la fila de Z
+                print(f"Evaluacion de X{i+1}: {cb}*{matrizAu[:, int(noBasicVars[i])]} ={minNum[i]}")
             else:
                 minNum[i] = np.dot(cb, matrizAu[:, int(noBasicVars[i])])
 
@@ -66,13 +81,19 @@ def simplex(restric: list[float | int], indep: list[float | int], obj: list[floa
                     posCol = i
 
         neg = False  # si el vector minNum no tiene valores negativos significa que ya estamos en el optimo
-        for i in minNum:
-            if i < 0:
-                neg = True
-                break
 
-        if neg == False:
+        if min(minNum)<0:
+            print(f"El menor numero negativo es: {min(minNum)}. Por ende, ese ser+a la variables que debe de entrar en la base")
+        else:
+            print(f"El menor numero es: {min(minNum)}. Como no es negativo, llegamos al optimo")
             break
+        #for i in minNum:
+        #    if i < 0:
+        #        neg = True
+        #        break
+        #
+        #if neg == False:
+        #    break
 
         dividendos = np.dot(BInv, indepConv)  # se calcula las variables independientes
         divisores = np.dot(
@@ -214,8 +235,18 @@ def declaración_problema(*args) -> None:
             linea = ""
         print("════════════════════════════════\n")
 
+
         simplex(restrics, indep, obj, restricsTypes, minmax)
 
 
 if __name__ == "__main__":
-    declaración_problema()
+    #declaración_problema()
+    "Para probar solo el simplex sin escribir el problema, comentar la linea anterior y descomentar las siguientes lineas"
+    restrics=[[8.0, 6.0, 1.0],
+              [4.0, 2.0, 1.5],
+              [2.0, 1.5, 0.5]]
+    indep=[48.0, 20.0, 8.0]
+    obj=[60.0, 30.0, 20.0]
+    restricsTypes=[1, 1, 1]
+    minmax="max"
+    simplex(restrics, indep, obj, restricsTypes, minmax)
