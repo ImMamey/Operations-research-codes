@@ -1,4 +1,7 @@
+from typing import Tuple, List
+
 import numpy as np
+from numpy import ndarray
 from numpy.linalg import inv, det
 
 """
@@ -423,9 +426,101 @@ def dosFases(matriz, z, cr, cond, columns):
         cont += 1
      
     simplexDosFases( np.array(mtt), np.array(zt), np.array(cr) )
-            
-if ('__main__' == __name__):
 
+def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
+    """
+    En esta funcion se declara e introduce el problema a trabajar, e imprime el problema basico. Este método llama a la funcion que ejecuta el simplex revisado
+    :param *args: Parametros opcionales, se pone asi para evitar errores.
+    :return: None
+    """
+    restric = []
+    restrics = []
+    indep = []
+    obj = []
+    restricsTypes = []
+    rt = ""
+
+    try:
+        numVar = int(input("Cuantas variables utilizaras?: "))
+        numRestric = int(input("Cuantas restricciones utilizaras?: "))
+
+        for i in range(0, int(numVar)):
+            obj.append(float(input(f"Ingresa la variable X{i + 1} de la funcion objetivo: ")))
+
+        minmax = input("La funcion objetivo sera de minimizacion o maximizacion? (min, max): ")
+        print(f"\n")
+        if minmax == "min":
+            for i in range(0, int(numVar)):
+                obj[i] = obj[i] * -1
+
+        for i in range(0, int(numRestric)):
+            for j in range(0, int(numVar)):
+                restric.append(float(input(f"Ingresa la variable X{j + 1} de la restriccion {i + 1}: ")))
+
+            rt = input(f"Ingresa el tipo de restriccion para la restriccion {i + 1} (=, >=, <=): ")
+            ind = float(input(f"Ingresa el termino independiente del lado derecho de la restriccion {i + 1}: "))
+            print(f"\n")
+            match rt:
+                case "=":
+                    restricsTypes.append("=")
+                case "<=":
+                    restricsTypes.append("<=")
+                case ">=":
+                    restricsTypes.append(">=")  # se transforma el >= a <=
+                    # for m in range(0, numVar):
+                    #    restric[m] = restric[m] * -1
+                    # ind = ind * -1
+
+            restrics.append(restric)
+            indep.append(ind)
+            restric = []
+    except Exception as e:
+        print(f"Error introduciendo datos básicos del problema. Se detendrá el programa.\n\n")
+        print(e)
+        exit()
+    else:
+        # Este código renderiza las restricciones
+        print("═══════════El problema══════════")
+        if minmax == "max":
+            linea = "F.O.: Max Z ="
+        else:
+            linea = "F.O.: Min Z ="
+        for _ in range(numVar):
+            linea = linea + str(obj[_]) + f"X{_ + 1}" + " "
+        print(linea)
+        linea = ""
+        for i_ in range(numRestric):
+            for _ in range(numVar):
+                if _ + 1 == numVar:
+                    linea = linea + str(restrics[i_][_]) + f"X{_ + 1}" + " "
+                    if restricsTypes[i_] == 0:
+                        linea = linea + " = " + str(indep[i_])
+                    else:
+                        linea = linea + " <= " + str(indep[i_])
+                else:
+                    linea = linea + str(restrics[i_][_]) + f"X{_ + 1}" + " "
+            print(linea)
+            linea = ""
+        print("════════════════════════════════\n")
+    finally:
+        print(f"restricciones:{restrics}")
+        obj = np.array(obj)
+        indep = np.array(indep)
+        restricsnp = np.array(restrics)
+        print(f"restriccsnp:{restricsnp}")
+
+        return obj, indep, restricsnp, restricsTypes
+
+
+if ('__main__' == __name__):
+    z, cr, restrict, cond = declaración_problema()
+    #TODO: borrar estas corridas
+    print("variables de la condicion dada:")
+    print(f"z={z}\n")
+    print(f"cr={cr}\n")
+    restrict = np.transpose(restrict)
+    print(f"restric={restrict}\n")
+    print(f"cond={cond}\n")
     """
     z = np.array( [150, 200] )
     cr = np.array( [45, 140, 120, 350] ) 
@@ -441,8 +536,9 @@ if ('__main__' == __name__):
 	[3, 1, 1]
     ])
     cond = ['>=', '=', '<=']"""
-        
-    # Todo lo organizas en columnas menos las Z's
+    # TODO: Borrar estas lineas, se usaban para meter el codigo automaticamente
+    """
+    # lo organizas en columnas menos las Z's
     z = np.array( [-500, -750] )
     # Columna de Coeficientes
     cr = np.array( [70, 130, 150] )
@@ -453,6 +549,7 @@ if ('__main__' == __name__):
     ])
     # Las condiciones en orden segun las Z's, Cr y las Restricciones
     cond = ['>=', '>=', '>=']
+    """
     # Obtiene la Matriz Aumentada
     matriz = getMatAum(restrict, cond, z)
     # 'Menu'
