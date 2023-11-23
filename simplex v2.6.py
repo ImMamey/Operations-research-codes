@@ -122,29 +122,25 @@ def menorIgual(m_aum, z, cr):
     print("Z - 0")
     for i in z:
         print(i)
-
     ### Iteraciones
     _ = 0
     while True:
         _ += 1
-        print(f"═══════════════Iteracion #{_}═════════════════\n")
+        print(f"\n═══════════════Iteracion #{_}═════════════════\n")
         # Se obtiene la inversa de B
         B_1 = inv(B)
         # Se obtiene CbB_1
         CbB_1 = np.matmul(B_1, Cb)
 
-        print("B_1")
-        print(B_1)
-        print("Cb")
-        print(Cb)
-        print(" CbB_1 ")
-        print(CbB_1)
+        print(f"Binversa=\n{B_1}\n")
+        print(f"Calculo de cb=\n{Cb}*\n{B_1}\ncb={CbB_1}")
 
         # Evaluar no Básicas
         names = []
         # Se recorren las BNV obteniendo su nombre y el resultado de la evaluación
         for i in BNV:
             cmp = np.matmul(CbB_1, i.arr) - i.z
+            print(f"Evaluacion de X{i + 1}: {CbB_1}*{i.arr}-{i.z}={cmp}\n")
             names.append([cmp, i.name])
             print(i.name)
             print(str(CbB_1) + str(i.arr) + "-" + str(i.z) + " = " + str(cmp))
