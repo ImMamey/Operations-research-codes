@@ -404,6 +404,7 @@ def dosFases(matriz, z, cr, cond, columns):
         zec.append(i)
     for i in range(len(mtt)-len(z)+1):
         zec.append(0)
+    zt = zec
     zec = np.array(zec)
 
     for i in mtt:
@@ -413,30 +414,15 @@ def dosFases(matriz, z, cr, cond, columns):
         for j in range( len(z) ):
             if ( 'x'+str(j) == i.name ):
                 i.z = z[j]*-1
-    print("--------------------------------")
-    
-    print(ecss[0])
-    print(ecss[1])
-    print(ecss[2])
-    zec = -np.array(ecss[1]) + np.array(zec)
-    print(zec)
-
+                
     crb = []
-    """
+    cont = 0
     for i in range(len(mtt)):
-        if ( i < len(z) ):
-            mtt[i].z = z[i]
-            crb.append(z[i])
-        else:
-            mtt[i].z = 0
-            crb.append(0)
-    """
-
-    
-
-
-    simplexDosFases( np.array(mtt), np.array(zec), np.array(cc) )
-    
+        mtt[cont].z = zec[i]
+        crb.append(zec[i])
+        cont += 1
+     
+    simplexDosFases( np.array(mtt), np.array(zt), np.array(cr) )
             
 if ('__main__' == __name__):
 
@@ -448,19 +434,25 @@ if ('__main__' == __name__):
 	    [1, 0, 4, 10]
     ])
     cond = ['<=', '<=', '<=', '<=']
-    """
-    
-    # Todo lo organizas en columnas menos las Z's
-    z = np.array( [1.5, 1] )
-    # Columna de Coeficientes
+    z = np.array( [1.5, 1] )1
     cr = np.array( [7, 4, 8] )
-    # Las restricciones pero en columnas
     restrict = np.array([
 	[2, 0, 2],
 	[3, 1, 1]
     ])
+    cond = ['>=', '=', '<=']"""
+        
+    # Todo lo organizas en columnas menos las Z's
+    z = np.array( [-500, -750] )
+    # Columna de Coeficientes
+    cr = np.array( [70, 130, 150] )
+    # Las restricciones pero en columnas
+    restrict = np.array([
+	[1, 2, 4],
+	[1, 2, 2]
+    ])
     # Las condiciones en orden segun las Z's, Cr y las Restricciones
-    cond = ['>=', '=', '<=']
+    cond = ['>=', '>=', '>=']
     # Obtiene la Matriz Aumentada
     matriz = getMatAum(restrict, cond, z)
     # 'Menu'
