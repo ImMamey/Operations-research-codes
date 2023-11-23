@@ -138,12 +138,14 @@ def menorIgual(m_aum, z, cr):
         # Evaluar no Básicas
         names = []
         # Se recorren las BNV obteniendo su nombre y el resultado de la evaluación
+        a_ = 0
         for i in BNV:
+            a_ +=1
             cmp = np.matmul(CbB_1, i.arr) - i.z
-            print(f"Evaluacion de X{i + 1}: {CbB_1}*{i.arr}-{i.z}={cmp}\n")
+            print(f"\nEvaluacion de X{a_}: {i.arr}*{CbB_1}-{i.z}={cmp}")
             names.append([cmp, i.name])
-            print(i.name)
-            print(str(CbB_1) + str(i.arr) + "-" + str(i.z) + " = " + str(cmp))
+            #print(i.name)
+            #print(str(CbB_1) + str(i.arr) + "-" + str(i.z) + " = " + str(cmp))
 
         # Aqui se va a filtrar quien es el menor. Para ello nos seteamos en el primer
         # Valor y a partir de ahi vamos filtrando. Buscamos obtener su nombre y el valor
@@ -157,7 +159,9 @@ def menorIgual(m_aum, z, cr):
             if i[0] < cmp:
                 n = i[1]
                 cmp = i[0]
-        print(str(n) + " " + str(cmp))
+        #print(str(n) + " " + str(cmp))
+        print(f"El menor numero negativo es {cmp}. \n"
+              f"Por ende, este sera la variable que entra a la base.\n")
 
         # Si no hay negativos es el optimo
         if condNega == 0:
@@ -165,13 +169,16 @@ def menorIgual(m_aum, z, cr):
             # Se imprimen las variables basicas que terminaron en el arreglo
             for i in BV:
                 st += i.name + " "
-            print(st)
+            #print(st)
 
             # Ultimos Calculos
             B_2 = np.matmul(B_1, Cb)
             sol = np.matmul(cr, B_1)
-            print("Z Opt", sol)
-            print(np.matmul(cr, B_2))
+            print(f"{st}={sol}")
+            print(f"No hay valores negativos, por lo tanto se encontro el optimo. \n"
+                  f"Z Opt = {cr}*{B_2}={np.matmul(cr, B_2)}")
+
+            #print(np.matmul(cr, B_2))
             break
         # EndIf
 
@@ -183,11 +190,12 @@ def menorIgual(m_aum, z, cr):
 
         # Prueba de Factibilidad
         # Calculos
-        print("Factibilidad")
+        print(f"Factibilidad \n Calculo de la matriz inversa por la columna")
         B_1aj = np.matmul(aj.arr, B_1)
-        print("B_1aj" + str(B_1aj))
+        print(f"B_1aj={B_1}*{aj.arr}={str(B_1aj)}")
         B_1b = np.matmul(cr, B_1)
-        print("B_1b" + str(B_1b))
+        print(f"B_1aj={B_1}*{cr}={str(B_1b)}")
+
 
         # Aqui se busca filtrar para obtener el primer positivo
         # Identifica si son negativos todos
@@ -224,10 +232,10 @@ def menorIgual(m_aum, z, cr):
                 B[pos] = aj.arr
                 Cb[pos] = aj.z
 
-        print("B")
-        print(B)
-        print("B_1")
-        print(inv(B))
+        #print("B")
+        #print(B)
+        #print("B_1")
+        #print(inv(B))
 
 
 # Desde cierto punto de vista, nos parecio mejor organizar en columnas en vez de filas
