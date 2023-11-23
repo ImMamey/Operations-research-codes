@@ -289,9 +289,13 @@ def simplexDosFases(m_aum, z, cr):
             break
 
         for i in range( len( B_1b ) ):
+            if (B_1aj[i]==0):
+                continue
+            
             if ( B_1b[i]/B_1aj[i] < cmp and B_1b[i]/B_1aj[i] >= 0):
                 cmp = B_1b[i]/B_1aj[i]
                 pos = i
+                
         for i in range ( len(BNV) ):
             if ( BNV[i].name == aj.name ):
                 BNV[i].base = 'basica'
@@ -409,19 +413,29 @@ def dosFases(matriz, z, cr, cond, columns):
         for j in range( len(z) ):
             if ( 'x'+str(j) == i.name ):
                 i.z = z[j]*-1
+    print("--------------------------------")
+    
+    print(ecss[0])
+    print(ecss[1])
+    print(ecss[2])
+    zec = -np.array(ecss[1]) + np.array(zec)
+    print(zec)
 
-    #print(ecss[0])
-    #print(ecss[1])
-    #print(ecss[2])
-    #zec = -np.array(ecss[1]) + np.array(zec)
-    #print(zec)
+    crb = []
+    """
+    for i in range(len(mtt)):
+        if ( i < len(z) ):
+            mtt[i].z = z[i]
+            crb.append(z[i])
+        else:
+            mtt[i].z = 0
+            crb.append(0)
+    """
 
-    mtt[0].z = 1.5
-    mtt[1].z = 0
-    mtt[2].z = 0
-    mtt[3].z = 0
+    
 
-    simplexDosFases( np.array(mtt), np.array([1.5, 0, 0 ,0]), np.array([7,4,8]) )
+
+    simplexDosFases( np.array(mtt), np.array(zec), np.array(cc) )
     
             
 if ('__main__' == __name__):
