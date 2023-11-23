@@ -139,7 +139,7 @@ def menorIgual(m_aum, z, cr):
             # Ultimos Calculos
             B_2 = np.matmul(B_1, Cb)
             sol = np.matmul(cr, B_1)
-            print('Z Opt',sol)
+            print('Z Opt', sol)
             print( np.matmul(cr, B_2) )
             break
         # EndIf
@@ -252,6 +252,12 @@ def simplexDosFases(m_aum, z, cr):
                 n = i[1]
                 cmp = i[0]
         if (condNega == 0):
+
+            for i in BV:
+                if (i.type == 'artificial'):
+                    print('Solucion no Acotada')
+                    return NULL
+            
             st = '\n'
             # Se imprimen las variables basicas que terminaron en el arreglo
             for i in BV:
@@ -365,6 +371,10 @@ def dosFases(matriz, z, cr, cond, columns):
         zec.append(emmet[i].z)
         
     results = simplexDosFases(emmet, zec, cra )
+
+    if (results == NULL):
+        print('Solucion No Acotada')
+        return NULL
 
     BV = results[0]
     BNV = results[1]
