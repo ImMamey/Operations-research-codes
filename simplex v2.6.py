@@ -53,19 +53,19 @@ def getMatAum(restrict, cond, z):
             matriz.append(column( 'a'+str(i), np.identity(cantConds)[i], 'artificial', 0,'basica'))
     return matriz
 
-def menorIgual(m_aum, z, cr):
+def menorIgual(m_aum, z, cr,minmax):
     # Variables Basicas
     BV = []
     # Variables NO Basicas
     BNV = []
-    # La tabla llamada Cb en los PDFS 
+    # La tabla llamada Cb en los PDFS
     Cb = []
     # Esta es para obtener el arreglo de la matriz de las variables basicas sin complicar
     BVtoMat = []
 
     # Aqui se recorre la matriz aumentada buscando filtrar las basicas y las no basicas
     for i in m_aum:
-        if (i.base == 'basica'):
+        if i.base == "basica":
             # Filtramos las Basicas
             BV.append(i)
             # Filtramos los arreglos de las Basicas para facilitar la obtencion de la B
@@ -77,45 +77,46 @@ def menorIgual(m_aum, z, cr):
             BNV.append(i)
 
     # Se obtiene B
-    B = np.array(BVtoMat);
+    B = np.array(BVtoMat)
 
-    print('B')
+    print("B")
     print(B)
 
-    print('BNV - 0')
+    print("BNV - 0")
     for i in BNV:
         print(i)
-        
-    print('BV - 0')
+
+    print("BV - 0")
     for i in BV:
         print(i)
 
-    print('Z - 0')
+    print("Z - 0")
     for i in z:
         print(i)
-
     ### Iteraciones
-    while(True):
+    _ = 0
+    while True:
+        _ += 1
+        print(f"\n═══════════════Iteracion #{_}═════════════════\n")
         # Se obtiene la inversa de B
         B_1 = inv(B)
         # Se obtiene CbB_1
         CbB_1 = np.matmul(B_1, Cb)
 
-        print('B_1')
-        print(B_1)        
-        print('Cb')
-        print(Cb)        
-        print(' CbB_1 ')
-        print( CbB_1 )
-        
+        print(f"Binversa=\n{B_1}\n")
+        print(f"Calculo de cb=\n{Cb}*\n{B_1}\ncb={CbB_1}")
+
         # Evaluar no Básicas
         names = []
         # Se recorren las BNV obteniendo su nombre y el resultado de la evaluación
+        a_ = 0
         for i in BNV:
+            a_ +=1
             cmp = np.matmul(CbB_1, i.arr) - i.z
-            names.append( [cmp, i.name] )
-            print( i.name )
-            print( str(CbB_1) + str(i.arr) + '-' + str(i.z) + ' = ' +str(cmp) )
+            print(f"\nEvaluacion de X{a_}: {i.arr}*{CbB_1}-{i.z}={cmp}")
+            names.append([cmp, i.name])
+            #print(i.name)
+            #print(str(CbB_1) + str(i.arr) + "-" + str(i.z) + " = " + str(cmp))
 
         # Aqui se va a filtrar quien es el menor. Para ello nos seteamos en el primer
         # Valor y a partir de ahi vamos filtrando. Buscamos obtener su nombre y el valor
@@ -124,82 +125,88 @@ def menorIgual(m_aum, z, cr):
         # Esta var nos permite identificar si hay al menos una negativa
         condNega = 0
         for i in names:
-            if ( i[0] < 0 ):
+            if i[0] < 0:
                 condNega = 1
-            if (i[0] < cmp):
+            if i[0] < cmp:
                 n = i[1]
                 cmp = i[0]
-        print(str(n) + ' ' + str(cmp))
+        #print(str(n) + " " + str(cmp))
+        print(f"El menor numero negativo es {cmp}. \n"
+              f"Por ende, este sera la variable que entra a la base.\n")
 
         # Si no hay negativos es el optimo
-        if (condNega == 0):
-            st = '\n'
+        if condNega == 0:
+            st = "\n"
             # Se imprimen las variables basicas que terminaron en el arreglo
             for i in BV:
-                st += i.name + ' '
-            print(st)
-            
+                st += i.name + " "
+            #print(st)
+
             # Ultimos Calculos
             B_2 = np.matmul(B_1, Cb)
             sol = np.matmul(cr, B_1)
-            print('Z Opt', sol)
-            print( np.matmul(cr, B_2) )
+            print(f"{st}={sol}")
+            print(f"No hay valores negativos, por lo tanto se encontro el optimo. \n"
+                  f"Z Opt = {cr}*{B_2}={np.matmul(cr, B_2)}")
+
+            #print(np.matmul(cr, B_2))
             break
         # EndIf
 
         # Se busca aj en BNV mediante el nombre que obtuvimos antes
-        aj = []; 
+        aj = []
         for i in BNV:
-            if (i.name == n):
-                aj = i;
-        
+            if i.name == n:
+                aj = i
+
         # Prueba de Factibilidad
         # Calculos
-        print('Factibilidad')
-        B_1aj = np.matmul( aj.arr, B_1 )
-        print('B_1aj'+str(B_1aj))
-        B_1b = np.matmul( cr, B_1 )
-        print('B_1b'+str(B_1b))
+        print(f"Factibilidad \n Calculo de la matriz inversa por la columna")
+        B_1aj = np.matmul(aj.arr, B_1)
+        print(f"B_1aj={B_1}*{aj.arr}={str(B_1aj)}")
+        B_1b = np.matmul(cr, B_1)
+        print(f"B_1aj={B_1}*{cr}={str(B_1b)}")
+
 
         # Aqui se busca filtrar para obtener el primer positivo
         # Identifica si son negativos todos
         # Se busca su posicion en BNV y su valor de coeficiente
         pos = 0
-        cmp;
-        for i in range( len( B_1b ) ):
-            if ( B_1aj[i] == 0 ):
+        cmp
+        for i in range(len(B_1b)):
+            if B_1aj[i] == 0:
                 continue
             else:
-                cmp = B_1b[i]/B_1aj[i]
-            if ( B_1b[i]/B_1aj[i] >= 0 ):
-                cmp = B_1b[i]/B_1aj[i]
+                cmp = B_1b[i] / B_1aj[i]
+            if B_1b[i] / B_1aj[i] >= 0:
+                cmp = B_1b[i] / B_1aj[i]
                 pos = i
                 break
 
-        if (cmp < 0):
-            print('Mi loco es puro nega')
+        if cmp < 0:
+            print("Mi loco es puro nega")
             break
 
         # Aqui se termina de filtrar al menor positivo
         # Se busca su posicion en BNV y su valor de coeficiente
-        for i in range( len( B_1b ) ):
-            if ( B_1b[i]/B_1aj[i] < cmp and B_1b[i]/B_1aj[i] >= 0):
-                cmp = B_1b[i]/B_1aj[i]
+        for i in range(len(B_1b)):
+            if B_1b[i] / B_1aj[i] < cmp and B_1b[i] / B_1aj[i] >= 0:
+                cmp = B_1b[i] / B_1aj[i]
                 pos = i
 
         # Entra AJ a BNV en la posición 'Pos'. Se intercambian columnas
-        for i in range ( len(BNV) ):
-            if ( BNV[i].name == aj.name ):
-                BNV[i].base = 'basica'
-                BV[pos].base = 'no basica'
+        for i in range(len(BNV)):
+            if BNV[i].name == aj.name:
+                BNV[i].base = "basica"
+                BV[pos].base = "no basica"
                 BNV[i], BV[pos] = BV[pos], BNV[i]
                 B[pos] = aj.arr
                 Cb[pos] = aj.z
 
-        print('B')
-        print(B)
-        print('B_1')
-        print(inv(B))
+        #print("B")
+        #print(B)
+        #print("B_1")
+        #print(inv(B))
 
 # Desde cierto punto de vista, nos parecio mejor organizar en columnas en vez de filas
 class column:
@@ -221,7 +228,7 @@ class column:
     def str(self):
         return str(self.arr)
 
-def simplexDosFases(m_aum, z, cr):
+def simplexDosFases(m_aum, z, cr,minmax,op):
     BV = []
     BNV = []
     Cb = []
@@ -261,16 +268,17 @@ def simplexDosFases(m_aum, z, cr):
             if i[0] < cmp:
                 n = i[1]
                 cmp = i[0]
+        
+        st = "\n"
+        print("Variables no basicas: ")
+        for i in BNV:
+            st += i.name + " "
+        print(st)
 
         st = "\n"
         # Se imprimen las variables basicas que terminaron en el arreglo
         print("Variables basicas: ")
         for i in BV:
-            st += i.name + " "
-        print(st)
-        st = "\n"
-        print("Variables no basicas: ")
-        for i in BNV:
             st += i.name + " "
         print(st)
 
@@ -283,6 +291,8 @@ def simplexDosFases(m_aum, z, cr):
                 if i.type == "artificial":
                     print("Solucion no Acotada")
                     return None
+            if op==2 and minmax=='min':
+                sol=sol*-1
             return [BV, BNV, sol]
         # EndIf
 
@@ -324,7 +334,7 @@ def simplexDosFases(m_aum, z, cr):
                 B[pos] = aj.arr
                 Cb[pos] = aj.z
 
-def dosFases(matriz, z, cr, cond, columns):
+def dosFases(matriz, z, cr, cond, columns,minmax):
     # Fase 1
     # Ecuaciones sin la de ec Z
     ecs = []
@@ -384,7 +394,7 @@ def dosFases(matriz, z, cr, cond, columns):
     for i in range(columns):
         zec.append(emmet[i].z)
     print("═══════════════Primera Fase═════════════════\n")
-    results = simplexDosFases(emmet, zec, cra)
+    results = simplexDosFases(emmet, zec, cra,minmax,op=1)
 
     if results == None:
         print("Solucion No Acotada")
@@ -446,7 +456,7 @@ def dosFases(matriz, z, cr, cond, columns):
         crb.append(zec[i])
         cont += 1
     print("═══════════════Segunda Fase═════════════════\n")
-    simplexDosFases(np.array(mtt), np.array(zt), np.array(cr))
+    simplexDosFases(np.array(mtt), np.array(zt), np.array(cr),minmax,op=2)
 
 def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
     """
@@ -530,11 +540,11 @@ def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
         restricsnp = np.array(restrics)
         print(f"restriccsnp:{restricsnp}")
 
-        return obj, indep, restricsnp, restricsTypes
+        return obj, indep, restricsnp, restricsTypes,minmax
 
 
 if ('__main__' == __name__):
-    z, cr, restrict, cond = declaración_problema()
+    z, cr, restrict, cond,minmax = declaración_problema()
     #TODO: borrar estas corridas
     print("variables de la condicion dada:")
     print(f"z={z}\n")
@@ -575,7 +585,6 @@ if ('__main__' == __name__):
     matriz = getMatAum(restrict, cond, z)
     # 'Menu'
     if ('>=' not in cond and '=' not in cond):
-        pass
-        #menorIgual(matriz, z, cr)
+        menorIgual(matriz, z, cr,minmax)
     else:
-        dosFases(matriz, z, cr, cond, getSizeColumns(restrict, cond))
+        dosFases(matriz, z, cr, cond, getSizeColumns(restrict, cond),minmax)
