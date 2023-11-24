@@ -8,33 +8,23 @@ from numpy.linalg import inv, det
     Esta funcion cuenta la cantidad de variables que se requieren en la matriz. En
     otras palabras, la cantidad de columnas totales de la matriz.
 """
-
-
 def getSizeColumns(restrict, cond):
     # Aqui añades las columnas propias de las restricciones
-    tm = len(restrict)
+    tm = len(restrict) 
     for i in range(len(cond)):
         # Si es menor igual, añades una de holgura
-        if cond[i] == "<=":
+        if (cond[i] == '<='):
             tm += 1
         # Si es mayor igual, añades una de exceso y una artificial
-        if cond[i] == ">=":
+        if (cond[i] == '>='):
             tm += 2
         # Si es igual, añades una artificial
-        if cond[i] == "=":
-            tm += 1
+        if (cond[i] == '='):
+            tm += 1 
     return tm
 
-
 # Esta funcion produce la matriz aumentada, ordenada en columnas
-def getMatAum(restrict, cond, z)->list:
-    """
-    Obtiene la matriz aumentada
-    :param restrict: array con las restriciones
-    :param cond: array con las condicones
-    :param z: array con los coeficinetes de la F.O
-    :return: array esto :type nparray:
-    """
+def getMatAum(restrict, cond, z):
     # Arreglo de objetos 'column'
     matriz = []
     # Cantidad de Variables normales
@@ -47,42 +37,23 @@ def getMatAum(restrict, cond, z)->list:
     # Lleva nombre de la variable, el arreglo de valores, el tipo de variable,
     # La zeta que le corresponde y si es 'basica o no'
     for i in range(cantVarNormal):
-        matriz.append(column("x" + str(i), restrict[i], "normal", z[i], "no basica"))
+        matriz.append(column('x'+str(i), restrict[i], "normal", z[i],"no basica"))
 
     # Aqui se generan las columnas correspondientes a las condiciones
     # Se basa en la cantidad de condiciones para establecer el tamaño de la matriz identidad
     # El [i] en np.identity(cantConds)[i] permite obtener esa columna exacta de la matriz iden
     # Asi se obtienen las ubicaciones justas de las condiciones
     for i in range(cantConds):
-        if cond[i] == "<=":
-            matriz.append(
-                column("h" + str(i), np.identity(cantConds)[i], "holgura", 0, "basica")
-            )
-        if cond[i] == ">=":
-            matriz.append(
-                column(
-                    "a" + str(i), np.identity(cantConds)[i], "artificial", 0, "basica"
-                )
-            )
-            matriz.append(
-                column(
-                    "e" + str(i),
-                    np.identity(cantConds)[i] * -1,
-                    "exceso",
-                    0,
-                    "no basica",
-                )
-            )
-        if cond[i] == "=":
-            matriz.append(
-                column(
-                    "a" + str(i), np.identity(cantConds)[i], "artificial", 0, "basica"
-                )
-            )
+        if (cond[i] == '<='):
+            matriz.append(column( 'h'+str(i), np.identity(cantConds)[i], 'holgura', 0,'basica' ))
+        if (cond[i] == '>='):
+            matriz.append(column( 'a'+str(i), np.identity(cantConds)[i], 'artificial', 0,'basica'))
+            matriz.append(column( 'e'+str(i), np.identity(cantConds)[i]*-1, 'exceso', 0,'no basica'))
+        if (cond[i] == '='):
+            matriz.append(column( 'a'+str(i), np.identity(cantConds)[i], 'artificial', 0,'basica'))
     return matriz
 
-
-def menorIgual(m_aum, z, cr):
+def menorIgual(m_aum, z, cr,minmax):
     # Variables Basicas
     BV = []
     # Variables NO Basicas
@@ -237,7 +208,6 @@ def menorIgual(m_aum, z, cr):
         #print("B_1")
         #print(inv(B))
 
-
 # Desde cierto punto de vista, nos parecio mejor organizar en columnas en vez de filas
 class column:
     def __init__(self, x, arr, typ, z, base):
@@ -251,17 +221,14 @@ class column:
         self.z = z
         # Si es Basica o No
         self.base = base
-
     # Esto permite que cuanto hagas print a un objeto column se imprima el arreglo
     def __str__(self):
         return str(self.arr)
-
     # Esto te permite obtener el string del arreglo sin necesidad de acceder a los atributos
     def str(self):
         return str(self.arr)
 
-
-def simplexDosFases(m_aum, z, cr):
+def simplexDosFases(m_aum, z, cr,minmax,op):
     BV = []
     BNV = []
     Cb = []
@@ -276,9 +243,16 @@ def simplexDosFases(m_aum, z, cr):
             BNV.append(i)
 
     B = np.array(BVtoMat)
+    _ = 0
     while True:
+        _ += 1
+        print(f"═══════════════Iteracion #{_}═════════════════\n")
+
+        print(f"Matriz B: \n{B}\n")
         B_1 = inv(B)
+        print(f"Matriz B^(-1): \n{B_1}\n")
         CbB_1 = np.matmul(B_1, Cb)
+        print(f"Matriz CbB_1: \n{CbB_1}\n")
 
         names = []
         for i in BNV:
@@ -294,23 +268,31 @@ def simplexDosFases(m_aum, z, cr):
             if i[0] < cmp:
                 n = i[1]
                 cmp = i[0]
+        
+        st = "\n"
+        print("Variables no basicas: ")
+        for i in BNV:
+            st += i.name + " "
+        print(st)
+
+        st = "\n"
+        # Se imprimen las variables basicas que terminaron en el arreglo
+        print("Variables basicas: ")
+        for i in BV:
+            st += i.name + " "
+        print(st)
+
+        B_2 = np.matmul(B_1, Cb)
+        sol = np.matmul(cr, B_1)
+        print("Z Opt", sol)
+        print(np.matmul(cr, B_2))
         if condNega == 0:
             for i in BV:
                 if i.type == "artificial":
                     print("Solucion no Acotada")
-                    return NULL
-
-            st = "\n"
-            # Se imprimen las variables basicas que terminaron en el arreglo
-            for i in BV:
-                st += i.name + " "
-            print(st)
-
-            B_2 = np.matmul(B_1, Cb)
-            sol = np.matmul(cr, B_1)
-            print("Z Opt", sol)
-            print(np.matmul(cr, B_2))
-
+                    return None
+            if op==2 and minmax=='min':
+                sol=sol*-1
             return [BV, BNV, sol]
         # EndIf
 
@@ -352,8 +334,7 @@ def simplexDosFases(m_aum, z, cr):
                 B[pos] = aj.arr
                 Cb[pos] = aj.z
 
-
-def dosFases(matriz, z, cr, cond, columns):
+def dosFases(matriz, z, cr, cond, columns,minmax):
     # Fase 1
     # Ecuaciones sin la de ec Z
     ecs = []
@@ -412,12 +393,12 @@ def dosFases(matriz, z, cr, cond, columns):
     zec = []
     for i in range(columns):
         zec.append(emmet[i].z)
+    print("═══════════════Primera Fase═════════════════\n")
+    results = simplexDosFases(emmet, zec, cra,minmax,op=1)
 
-    results = simplexDosFases(emmet, zec, cra)
-
-    if results == NULL:
+    if results == None:
         print("Solucion No Acotada")
-        return NULL
+        return None
 
     BV = results[0]
     BNV = results[1]
@@ -474,9 +455,8 @@ def dosFases(matriz, z, cr, cond, columns):
         mtt[cont].z = zec[i]
         crb.append(zec[i])
         cont += 1
-
-    simplexDosFases(np.array(mtt), np.array(zt), np.array(cr))
-
+    print("═══════════════Segunda Fase═════════════════\n")
+    simplexDosFases(np.array(mtt), np.array(zt), np.array(cr),minmax,op=2)
 
 def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
     """
@@ -496,13 +476,9 @@ def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
         numRestric = int(input("Cuantas restricciones utilizaras?: "))
 
         for i in range(0, int(numVar)):
-            obj.append(
-                float(input(f"Ingresa la variable X{i + 1} de la funcion objetivo: "))
-            )
+            obj.append(float(input(f"Ingresa la variable X{i + 1} de la funcion objetivo: ")))
 
-        minmax = input(
-            "La funcion objetivo sera de minimizacion o maximizacion? (min, max): "
-        )
+        minmax = input("La funcion objetivo sera de minimizacion o maximizacion? (min, max): ")
         print(f"\n")
         if minmax == "min":
             for i in range(0, int(numVar)):
@@ -510,22 +486,10 @@ def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
 
         for i in range(0, int(numRestric)):
             for j in range(0, int(numVar)):
-                restric.append(
-                    float(
-                        input(
-                            f"Ingresa la variable X{j + 1} de la restriccion {i + 1}: "
-                        )
-                    )
-                )
+                restric.append(float(input(f"Ingresa la variable X{j + 1} de la restriccion {i + 1}: ")))
 
-            rt = input(
-                f"Ingresa el tipo de restriccion para la restriccion {i + 1} (=, >=, <=): "
-            )
-            ind = float(
-                input(
-                    f"Ingresa el termino independiente del lado derecho de la restriccion {i + 1}: "
-                )
-            )
+            rt = input(f"Ingresa el tipo de restriccion para la restriccion {i + 1} (=, >=, <=): ")
+            ind = float(input(f"Ingresa el termino independiente del lado derecho de la restriccion {i + 1}: "))
             print(f"\n")
             match rt:
                 case "=":
@@ -542,9 +506,7 @@ def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
             indep.append(ind)
             restric = []
     except Exception as e:
-        print(
-            f"Error introduciendo datos básicos del problema. Se detendrá el programa.\n\n"
-        )
+        print(f"Error introduciendo datos básicos del problema. Se detendrá el programa.\n\n")
         print(e)
         exit()
     else:
@@ -578,18 +540,18 @@ def declaración_problema(*args) -> tuple[ndarray, ndarray, ndarray, list[str]]:
         restricsnp = np.array(restrics)
         print(f"restriccsnp:{restricsnp}")
 
-        return obj, indep, restricsnp, restricsTypes
+        return obj, indep, restricsnp, restricsTypes,minmax
 
 
-if "__main__" == __name__:
-    z, cr, restrict, cond = declaración_problema()
-    # TODO: borrar estas corridas
-    #print("variables de la condicion dada:")
-    #print(f"z={z}\n")
-    #print(f"cr={cr}\n")
+if ('__main__' == __name__):
+    z, cr, restrict, cond,minmax = declaración_problema()
+    #TODO: borrar estas corridas
+    print("variables de la condicion dada:")
+    print(f"z={z}\n")
+    print(f"cr={cr}\n")
     restrict = np.transpose(restrict)
-    #print(f"restric={restrict}\n")
-    #print(f"cond={cond}\n")
+    print(f"restric={restrict}\n")
+    print(f"cond={cond}\n")
     """
     z = np.array( [150, 200] )
     cr = np.array( [45, 140, 120, 350] ) 
@@ -622,7 +584,7 @@ if "__main__" == __name__:
     # Obtiene la Matriz Aumentada
     matriz = getMatAum(restrict, cond, z)
     # 'Menu'
-    if ">=" not in cond and "=" not in cond:
-        menorIgual(matriz, z, cr)
+    if ('>=' not in cond and '=' not in cond):
+        menorIgual(matriz, z, cr,minmax)
     else:
-        dosFases(matriz, z, cr, cond, getSizeColumns(restrict, cond))
+        dosFases(matriz, z, cr, cond, getSizeColumns(restrict, cond),minmax)
