@@ -66,7 +66,9 @@ cmake-build-*/
 
 # IntelliJ
 out/
-
+Hungarian/methungaro.py
+Hungarian/prueba.py
+Hungarian/owo.py
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
