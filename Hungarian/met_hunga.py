@@ -284,23 +284,8 @@ def pasoUno(mt, nfilas, ncolumnas):
                 mt[i].append(0)
 
 
-if (__name__ == '__main__'):
-    rest = [
-        [50, 130, 190],
-        [130, 100, 150],
-        [110, 150, 270],
-        [150, 90, 60]
-    ]
 
-
-    rest = [
-        [8, 7, 9, 8, 6],
-        [4, 5, 3, 5, 3],
-        [2, 3, 4, 3, 2],
-        [7, 6, 8, 6, 7],
-        [5, 4, 4, 6, 3],
-    ]
-
+def inicio(rest):
     f_o = 'max'  # min o max, dependiendo del ejercicio
 
     mtBalanceada = crearMatriz(rest, len(rest), len(rest[0]))
@@ -340,6 +325,36 @@ if (__name__ == '__main__'):
     print('Costos: ')
     print(costos)
     print('Costo Total: ' + str(costo))
+
+    return coors, costo
+
+
+if (__name__ == '__main__'):
+    """rest = [
+        [50, 130, 190],
+        [130, 100, 150],
+        [110, 150, 270],
+        [150, 90, 60]
+    ]"""
+    rest =  [
+        [8,7,9,8,6],
+        [4,5,3,5,3],
+        [2,3,4,3,2],
+        [7,6,8,6,7],
+        [5,4,4,6,3]
+    ]
+
+
+    """rest = [
+        [8, 7, 9, 8, 6],
+        [4, 5, 3, 5, 3],
+        [2, 3, 4, 3, 2],
+        [7, 6, 8, 6, 7],
+        [5, 4, 4, 6, 3]
+    ]"""
+    inicio(rest)
+
+
 
 
 

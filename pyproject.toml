@@ -19,6 +19,7 @@ mypy = "^1.6.1"
 black = "^23.11.0"
 polars = "^0.20.1"
 deprecated = "^1.2.14"
+parameterized = "^0.9.0"
 
 
 [build-system]
