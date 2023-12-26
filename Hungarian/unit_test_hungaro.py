@@ -21,7 +21,7 @@ class TestHunga(unittest.TestCase):
                  [110, 150, 270],
                  [150, 90, 60]],
                 [[3, 4], [1, 1], [2, 2], [4, 3]],
-                210,
+                210,"max"
             ],
             [
                 "Caso 2",
@@ -30,8 +30,8 @@ class TestHunga(unittest.TestCase):
                  [2, 3, 4, 3, 2],
                  [7, 6, 8, 6, 7],
                  [5, 4, 4, 6, 3]],
-                [[1, 1], [2, 2], [3, 3], [4, 5]],
-                30,
+                [[3, 3], [1, 1], [4, 5], [5, 4], [2, 2]],
+                30, "min"
             ],
             [
                 "Caso 3",
@@ -39,7 +39,7 @@ class TestHunga(unittest.TestCase):
                  [9, 8, 3],
                  [6, 4, 7]],
                 [[2, 3], [1, 1], [3, 2]],
-                17,
+                17, "max"
             ],
             [
                 "Caso 4",
@@ -47,12 +47,12 @@ class TestHunga(unittest.TestCase):
                  [250, 305, 450, 500],
                  [200, 208, 320, 100]],
                 [[1, 2], [2, 1], [3, 4], [4, 3]],
-                500,
+                500, "max"
             ],
         ]
     )
-    def test_sequence(self, _nombre, rest, expected_coors, expected_costo):
-        result = inicio(rest)
+    def test_sequence(self, _nombre, rest, expected_coors, expected_costo, f_o):
+        result = inicio(rest,f_o)
         if result is not None and len(result) == 2:
             coors_result, costo_result = result
             self.assertEqual(coors_result, expected_coors)

@@ -285,8 +285,7 @@ def pasoUno(mt, nfilas, ncolumnas):
 
 
 
-def inicio(rest):
-    f_o = 'max'  # min o max, dependiendo del ejercicio
+def inicio(rest,f_o):
 
     mtBalanceada = crearMatriz(rest, len(rest), len(rest[0]))
     # TODO: verificar usos de estos dos, si solo se usa para imprimir, se puede borrar.
@@ -343,7 +342,7 @@ if (__name__ == '__main__'):
         [7,6,8,6,7],
         [5,4,4,6,3]
     ]
-
+    f_o = 'min'  # min o max, dependiendo del ejercicio
 
     """rest = [
         [8, 7, 9, 8, 6],
@@ -352,7 +351,7 @@ if (__name__ == '__main__'):
         [7, 6, 8, 6, 7],
         [5, 4, 4, 6, 3]
     ]"""
-    inicio(rest)
+    inicio(rest,f_o)
 
 
 
