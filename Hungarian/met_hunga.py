@@ -159,16 +159,16 @@ def pasoDos(mat, nfilas, ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
                     mtb[i][j] -= minVal
 
-        create_and_print_df(mtb)
-
-        print('Tabla obtenida en el Paso 2')
-
-        create_and_print_df(mtb)
-        
         for i in interFilas:
             for j in interColumnas:
                 mtb[i][j] = minVal
 
+        create_and_print_df(mtb)
+
+        print('Tabla obtenida en el Paso 2')
+        
+        create_and_print_df(mt)
+        
         for i in range(nfilas):
             for j in range(ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
