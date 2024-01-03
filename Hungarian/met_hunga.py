@@ -126,17 +126,22 @@ def pasoDos(mat, nfilas, ncolumnas):
         print('3.1. Mínimo número de Asignación de Líneas \n')
         nano = nfilas
         cont = 1
+
+        interFilas = []
+        interColumnas = []
         while (nano > 0):
             for i in range(nfilas):
                 if (mtb[i].count(0) == nano):
                     killFila(mtb, ncolumnas, i)
                     print('Numero de Asignación: ' + str(cont))
                     cont += 1
+                    interFilas.append(i)
                     create_and_print_df(mtb)
                 if (cerosColumnas(mtb, nfilas, i) == nano):
-                    killColumn(mtb, nfilas, j)
+                    killColumn(mtb, nfilas, i)
                     print('Numero de Asignación: ' + str(cont))
                     cont += 1
+                    interColumnas.append(i)
                     create_and_print_df(mtb)
             nano -= 1
 
@@ -146,6 +151,7 @@ def pasoDos(mat, nfilas, ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
                     if (mtb[i][j] < minVal):
                         minVal = mtb[i][j]
+                        
         print('3.2. Mínimo valor de la tabla Resultante: ' + str(minVal))
         print('3.2.1. Tabla Resultante de la Resta del Mínimo Valor')
         for i in range(nfilas):
@@ -153,11 +159,16 @@ def pasoDos(mat, nfilas, ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
                     mtb[i][j] -= minVal
 
+        for i in interFilas:
+            for j in interColumnas:
+                mtb[i][j] = minVal
+
         create_and_print_df(mtb)
 
         print('Tabla obtenida en el Paso 2')
+        
         create_and_print_df(mt)
-
+        
         for i in range(nfilas):
             for j in range(ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
@@ -329,20 +340,13 @@ def inicio(rest,f_o):
 
 
 if (__name__ == '__main__'):
-    """rest = [
+    rest = [
         [50, 130, 190],
         [130, 100, 150],
         [110, 150, 270],
         [150, 90, 60]
-    ]"""
-    rest =  [
-        [8,7,9,8,6],
-        [4,5,3,5,3],
-        [2,3,4,3,2],
-        [7,6,8,6,7],
-        [5,4,4,6,3]
     ]
-    f_o = 'min'  # min o max, dependiendo del ejercicio
+    f_o = 'max'  # min o max, dependiendo del ejercicio
 
     """rest = [
         [8, 7, 9, 8, 6],
