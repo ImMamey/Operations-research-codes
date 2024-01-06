@@ -71,6 +71,8 @@ Hungarian/prueba.py
 Hungarian/owo.py
 Hungarian/*.pyc
 Hungarian/__pycache__/
+Hungarian/__pycache__
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 *.pyc
@@ -131,3 +133,4 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 Hungarian/__pycache__/unit_test_hungaro.cpython-311.pyc
+Hungarian/__pycache__/met_hunga.cpython-311.pyc
