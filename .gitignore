@@ -134,3 +134,5 @@ fabric.properties
 .idea/**/azureSettings.xml
 Hungarian/__pycache__/unit_test_hungaro.cpython-311.pyc
 Hungarian/__pycache__/met_hunga.cpython-311.pyc
+regresion/test.py
+regresion/~$DATOS PARA TRABAJO GRUPOS I.xlsx
