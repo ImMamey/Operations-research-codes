@@ -109,8 +109,8 @@ def pasoDos(mat, nfilas, ncolumnas):
     for i in range(len(bx)):
         for j in range(nfilas):
             mt[j][i] -= bx[i]
-
     create_and_print_df(mt)
+    
     conf = revisarAsignaciones(mt, nfilas, ncolumnas)
 
     if (conf == True):
@@ -180,6 +180,10 @@ def pasoDos(mat, nfilas, ncolumnas):
 
         if (conf == True):
             return mt
+        else:
+            #print('Hay que ciclar Compai')
+            return pasoDos(mt, nfilas, ncolumnas)
+            
 
 
 def cerosColumnas(mt, nfilas, ncolu):
@@ -195,7 +199,7 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
     coors = []
     nano = 1
     cond = 1
-
+    
     for i in range(nfilas):
         ax = []
         for j in range(ncolumnas):
@@ -340,22 +344,61 @@ def inicio(rest,f_o):
 
 
 if (__name__ == '__main__'):
-    rest = [
+
+    # Ejercicio N-1 
+    """ rest = [
         [50, 130, 190],
         [130, 100, 150],
         [110, 150, 270],
         [150, 90, 60]
     ]
-    f_o = 'max'  # min o max, dependiendo del ejercicio
+    f_o = 'max' """
 
+    # Ejercicio N-2 (Minimizar)
     """rest = [
         [8, 7, 9, 8, 6],
         [4, 5, 3, 5, 3],
         [2, 3, 4, 3, 2],
         [7, 6, 8, 6, 7],
         [5, 4, 4, 6, 3]
-    ]"""
-    inicio(rest,f_o)
+    ]
+    f_o = 'min' """
+
+    # Ejercicio N-3
+    """ rest = [
+        [32, 19, 29],
+        [26, 25, 20],
+        [36, 28, 26]
+    ]
+    f_o = 'max' """
+
+    # Ejercicio N-4 (Ciclico)
+    rest = [
+        [32, 19, 29, 8],
+        [26, 25, 20, 3],
+        [36, 28, 26, 3],
+        [39, 22, 32, 8]
+    ]
+    f_o = 'max'
+
+    # Ejercicio N-5
+    """ rest = [
+        [10, 9, 5],
+        [9, 8, 3],
+        [6, 4, 7]
+    ]
+    f_o = 'max' """
+
+    # Ejercicio N-6 (ERROR)
+    """ rest = [
+        [3, 5, 3, 3],
+        [5, 14, 10, 10],
+        [12, 6, 19, 17],
+        [2, 17, 10, 12]
+    ]
+    f_o = 'max' """
+  
+    inicio(rest, f_o)
 
 
 
