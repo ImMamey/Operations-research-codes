@@ -63,7 +63,7 @@ def obtenerMenorFila(mt, nfila, ncolumnas)->list[int | Any]:
     :return: Matriz
     """
     ax = mt[nfila][0]
-    for j in range(ncolumnas):
+    for j in range(ncolumnas):        
         if (ax > mt[nfila][j]):
             ax = mt[nfila][j]
     return ax
@@ -92,6 +92,7 @@ def pasoDos(mat, nfilas, ncolumnas):
     print('2.1. Restar menor de Fila a Cada Elemento de la Fila')
     for i in range(nfilas):
         ax.append(obtenerMenorFila(mt, i, ncolumnas))
+        
     print('2.1.1. Menor Valor a Restar por Fila')
     print(ax)
     for i in range(len(ax)):
@@ -173,7 +174,7 @@ def pasoDos(mat, nfilas, ncolumnas):
             for j in range(ncolumnas):
                 if (type(mtb[i][j]) == type(3)):
                     mt[i][j] = mtb[i][j]
-
+    
         print('3.2.2. Combinación de Ambas Tablas')
         create_and_print_df(mt)
         conf = revisarAsignaciones(mt, nfilas, ncolumnas)
@@ -209,7 +210,7 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
     while (True):
         cond = 0
         for i in range(nfilas):
-            if (mt[i].count(0) == nano):
+            if (mt[i].count(0) == nano): # Reviso si Nano = Cantidad de Ceros en la Fila
                 cond = 1
                 for j in range(ncolumnas):
                     if (mt[i][j] == 0):
@@ -222,6 +223,17 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
             nano += 1
         if (nano > ncolumnas):
             break
+
+    # LA RESUELVE TODO 44 MIL
+    for x in range(5):
+        for i in range(nfilas):
+            for j in range(ncolumnas):
+                if (mt[i][j] == 0):
+                    killColumn(mt, nfilas, j)
+                    killFila(mt, ncolumnas, i)
+                    coors.append([i + 1, j + 1])
+                    mt[i][j] = '-'
+    
     print('2.3. Asignación de Líneas')
     print(coors)
     create_and_print_df(mt)
@@ -235,7 +247,6 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
         print(coors)
         print('\n\n════════════════════════════════\n')
         return False
-
 
 def obtenerCoors(matriz, nfilas, ncolumnas):
     mt = []
@@ -265,6 +276,17 @@ def obtenerCoors(matriz, nfilas, ncolumnas):
             nano += 1
         if (nano > ncolumnas):
             break
+
+    # LA RESUELVE TODO 44 MIL
+    for x in range(5):
+        for i in range(nfilas):
+            for j in range(ncolumnas):
+                if (mt[i][j] == 0):
+                    killColumn(mt, nfilas, j)
+                    killFila(mt, ncolumnas, i)
+                    coors.append([i + 1, j + 1])
+                    mt[i][j] = '-'
+        
     return coors
 
 
@@ -329,6 +351,7 @@ def inicio(rest,f_o):
     pasoUno(mtCoors, len(rest), len(rest[0]))
     costo = 0;
     costos = []
+
     for k in coors:
         a = k[0] - 1
         b = k[1] - 1
@@ -373,13 +396,13 @@ if (__name__ == '__main__'):
     f_o = 'max' """
 
     # Ejercicio N-4 (Ciclico)
-    rest = [
+    """ rest = [
         [32, 19, 29, 8],
         [26, 25, 20, 3],
         [36, 28, 26, 3],
         [39, 22, 32, 8]
     ]
-    f_o = 'max'
+    f_o = 'max' """
 
     # Ejercicio N-5
     """ rest = [
@@ -397,7 +420,32 @@ if (__name__ == '__main__'):
         [2, 17, 10, 12]
     ]
     f_o = 'max' """
-  
+
+    # Ejercicio N-7
+    """ rest = [
+        [180, 150, 200, 200],
+        [250, 305, 450, 500],
+        [200, 208, 320, 100]
+    ]
+    f_o = 'max' """
+
+    # Ejercicio N-8
+    """ rest = [
+        [11800, 15000, 20000],
+        [12500, 13000, 14400],
+        [20000, 18000, 23000],
+        [18000, 17000, 16000]
+    ]
+    f_o = 'max' """
+
+    # Ejercicio N-9 (MIN)
+    rest = [
+        [13, 7, 12, 12],
+        [10, 13, 15, 7],
+        [13, 10, 8, 8]
+    ]
+    f_o = 'min'
+
     inicio(rest, f_o)
 
 
