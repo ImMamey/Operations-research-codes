@@ -15,6 +15,30 @@
     </tbody>
 </table>
 
+## Description
+This repository contains the codes of the Operations Research course at the University of Informatics Sciences. The codes are written in Python and are divided in two:
+1. [Hungarian Algorithm.](https://en.wikipedia.org/wiki/Hungarian_algorithm)
+2. [Revised Simplex Method.](https://en.wikipedia.org/wiki/Revised_simplex_method#:~:text=The%20revised%20simplex%20method%20is%20mathematically%20equivalent%20to%20the%20standard,the%20matrix%20representing%20the%20constraints.)
+
+## Requirements
+- Python 3.11+
+- Pandas
+- Tabulate
+- Numpy
+- Poetry (Optional)
+
+## Installation
+### a. If using Poetry:
+1. `pip install poetry`
+2. `poetry lock`
+3. `poetry install`
+4. Add the venv/lock as the project's interpreter.
+5. Run the code.
+
+### b. If not using Poetry:
+1. Open the [`pyproject.toml`](pyproject.toml) file.
+2. In the terminal, write `pip install <dependency name>` for each dependency listed under the `[tool.poetry.dependencies]` tag in the file from the previous step.
+3. Run the code.
 - - -
 ## Requisitos
 Si quieres correr el codigo por tu cuenta, tienes dos opciones:
