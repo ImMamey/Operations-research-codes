@@ -3,6 +3,8 @@
     <h4 align="center"><a href="docs/READMES.md">Readme en Español</a></h4>
 </p>
 
+> # [IMPORTANT]: The codes in this repository are written in spanish.
+
 ## Developers
 <table align="center">
     <tbody>
@@ -39,6 +41,30 @@ This repository contains the codes of the Operations Research course at the Univ
 1. Open the [`pyproject.toml`](pyproject.toml) file.
 2. In the terminal, write `pip install <dependency name>` for each dependency listed under the `[tool.poetry.dependencies]` tag in the file from the previous step.
 3. Run the code.
+
+## Execution
+### Hungarian Algorithm
+1. Adapt `rest` with your matrix and `f_o` with your function (`"min"` or `"max"`)
+```python
+    rest = [
+        [6, 2, 8, 5, 3, 0, 0],
+        [5, 3, 9, 4, 2, 0, 0],
+        [2, 3, 8, 4, 3, 0, 0],
+        [4, 2, 6, 6, 5, 0, 0],
+        [6, 1, 7, 6, 4, 0, 0],
+        [0, 0, 0, 0, 0, -100, -100],
+        [0, 0, 0, 0, 0, -100, -100],
+    ]
+    f_o = "max"  # min or max
+```
+2. Run the code.
+
+## Legal
+
+
+### Revised Simplex Method
+1. Run the code.
+2. The code will ask you for the number of variables, restrictions and matrix.
 - - -
 ## Requisitos
 Si quieres correr el codigo por tu cuenta, tienes dos opciones:
