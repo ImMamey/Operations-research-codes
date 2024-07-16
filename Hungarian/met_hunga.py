@@ -65,8 +65,10 @@ def obtenerMenorFila(mt, nfila, ncolumnas) -> list[int | Any]:
     :return: Matriz
     """
     ax = mt[nfila][0]
+
     for j in range(ncolumnas):
         if ax > mt[nfila][j]:
+
             ax = mt[nfila][j]
     return ax
 
@@ -94,7 +96,9 @@ def pasoDos(mat, nfilas, ncolumnas):
     print("2.1. Restar menor de Fila a Cada Elemento de la Fila")
     for i in range(nfilas):
         ax.append(obtenerMenorFila(mt, i, ncolumnas))
-    print("2.1.1. Menor Valor a Restar por Fila")
+        
+    print('2.1.1. Menor Valor a Restar por Fila')
+
     print(ax)
     for i in range(len(ax)):
         for j in range(ncolumnas):
@@ -111,8 +115,8 @@ def pasoDos(mat, nfilas, ncolumnas):
     for i in range(len(bx)):
         for j in range(nfilas):
             mt[j][i] -= bx[i]
-
     create_and_print_df(mt)
+    
     conf = revisarAsignaciones(mt, nfilas, ncolumnas)
 
     if conf == True:
@@ -175,13 +179,18 @@ def pasoDos(mat, nfilas, ncolumnas):
             for j in range(ncolumnas):
                 if type(mtb[i][j]) == type(3):
                     mt[i][j] = mtb[i][j]
+    
+        print('3.2.2. Combinación de Ambas Tablas')
 
-        print("3.2.2. Combinación de Ambas Tablas")
         create_and_print_df(mt)
         conf = revisarAsignaciones(mt, nfilas, ncolumnas)
 
         if conf == True:
             return mt
+        else:
+            #print('Hay que ciclar Compai')
+            return pasoDos(mt, nfilas, ncolumnas)
+            
 
 
 def cerosColumnas(mt, nfilas, ncolu):
@@ -197,7 +206,7 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
     coors = []
     nano = 1
     cond = 1
-
+    
     for i in range(nfilas):
         ax = []
         for j in range(ncolumnas):
@@ -207,6 +216,7 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
     while True:
         cond = 0
         for i in range(nfilas):
+
             if mt[i].count(0) == nano:
                 cond = 1
                 for j in range(ncolumnas):
@@ -220,7 +230,20 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
             nano += 1
         if nano > ncolumnas:
             break
-    print("2.3. Asignación de Líneas")
+
+
+    # LA RESUELVE TODO 44 MIL
+    for x in range(5):
+        for i in range(nfilas):
+            for j in range(ncolumnas):
+                if (mt[i][j] == 0):
+                    killColumn(mt, nfilas, j)
+                    killFila(mt, ncolumnas, i)
+                    coors.append([i + 1, j + 1])
+                    mt[i][j] = '-'
+    
+    print('2.3. Asignación de Líneas')
+
     print(coors)
     create_and_print_df(mt)
 
@@ -233,7 +256,6 @@ def revisarAsignaciones(matriz, nfilas, ncolumnas):
         print(coors)
         print("\n\n════════════════════════════════\n")
         return False
-
 
 def obtenerCoors(matriz, nfilas, ncolumnas):
     mt = []
@@ -263,6 +285,17 @@ def obtenerCoors(matriz, nfilas, ncolumnas):
             nano += 1
         if nano > ncolumnas:
             break
+
+    # LA RESUELVE TODO 44 MIL
+    for x in range(5):
+        for i in range(nfilas):
+            for j in range(ncolumnas):
+                if (mt[i][j] == 0):
+                    killColumn(mt, nfilas, j)
+                    killFila(mt, ncolumnas, i)
+                    coors.append([i + 1, j + 1])
+                    mt[i][j] = '-'
+        
     return coors
 
 
@@ -325,6 +358,7 @@ def inicio(rest, f_o):
     pasoUno(mtCoors, len(rest), len(rest[0]))
     costo = 0
     costos = []
+
     for k in coors:
         a = k[0] - 1
         b = k[1] - 1
@@ -339,23 +373,23 @@ def inicio(rest, f_o):
     return coors, costo
 
 
-if __name__ == "__main__":
-    rest = [
-        [6, 2, 8, 5, 3, 0, 0],
-        [5, 3, 9, 4, 2, 0, 0],
-        [2, 3, 8, 4, 3, 0, 0],
-        [4, 2, 6, 6, 5, 0, 0],
-        [6, 1, 7, 6, 4, 0, 0],
-        [0, 0, 0, 0, 0, -100, -100],
-        [0, 0, 0, 0, 0, -100, -100],
-    ]
-    f_o = "max"  # min o max, dependiendo del ejercicio
+if (__name__ == '__main__'):
 
+    # Ejercicio N-1 
+    """ rest = [
+        [50, 130, 190],
+        [130, 100, 150],
+        [110, 150, 270],
+        [150, 90, 60]
+    ]
+    f_o = 'max' """
+
+    # Ejercicio N-2 (Minimizar)
     """rest = [
         [8, 7, 9, 8, 6],
         [4, 5, 3, 5, 3],
         [2, 3, 4, 3, 2],
         [7, 6, 8, 6, 7],
         [5, 4, 4, 6, 3]
-    ]"""
     inicio(rest, f_o)
+

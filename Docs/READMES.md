@@ -1,11 +1,10 @@
 <p align="center">
-    <h1 align="center"> Operations Research Codes</h1>
-    <h4 align="center"><a href="Docs/READMES.md">Readme en Español</a></h4>
+    <h1 align="center"> Códigos de Investigación de Operaciones</h1>
+    <h4 align="center"><a href="docs/READMES.md">Leerme en Español</a></h4>
 </p>
 
-> # [IMPORTANT]: The codes in this repository are written in spanish.
 - - -
-## Developers
+## Desarrolladores
 <table align="center">
     <tbody>
         <tr>
@@ -19,34 +18,34 @@
 
  - - - 
 
-## Description
-This repository contains Python code implementations for solving optimization problems in Operations Research. The codes are divided into two parts:
-1. [Hungarian Algorithm.](https://en.wikipedia.org/wiki/Hungarian_algorithm)
-2. [Revised Simplex Method.](https://en.wikipedia.org/wiki/Revised_simplex_method#:~:text=The%20revised%20simplex%20method%20is%20mathematically%20equivalent%20to%20the%20standard,the%20matrix%20representing%20the%20constraints.)
+## Descripción
+Este repositorio contiene implementaciones de código en Python para resolver problemas de optimización en Investigación de Operaciones. Los códigos están divididos en dos partes:
+1. [Algoritmo Húngaro.](https://es.wikipedia.org/wiki/Algoritmo_h%C3%BAngaro)
+2. [Método Simplex Revisado.](https://es.wikipedia.org/wiki/M%C3%A9todo_simplex_revisado)
 
-## Requirements
+## Requisitos
 - Python 3.11+
 - Pandas
 - Tabulate
 - Numpy
-- Poetry (Optional)
+- Poetry (Opcional)
 
-## Installation
-### a. If using Poetry:
+## Instalación
+### a. Si estás utilizando Poetry:
 1. `pip install poetry`
 2. `poetry lock`
 3. `poetry install`
-4. Add the venv/lock as the project's interpreter.
-5. Run the code.
+4. Agrega venv/lock como intérprete del proyecto.
+5. Ejecuta el código.
 
-### b. If not using Poetry:
-1. Open the [`pyproject.toml`](pyproject.toml) file.
-2. In the terminal, write `pip install <dependency name>` for each dependency listed under the `[tool.poetry.dependencies]` tag in the file from the previous step.
-3. Run the code.
+### b. Si no estás utilizando Poetry:
+1. Abre el archivo [`pyproject.toml`](pyproject.toml).
+2. En la terminal, escribe `pip install <nombre de la dependencia>` para cada dependencia listada bajo la etiqueta `[tool.poetry.dependencies]` en el archivo del paso anterior.
+3. Ejecuta el código.
 
-## Execution
-### Hungarian Algorithm
-1. Adapt `rest` with your matrix and `f_o` with your function (`"min"` or `"max"`)
+## Ejecución
+### Algoritmo Húngaro
+1. Adapta `rest` con tu matriz y `f_o` con tu función (`"min"` o `"max"`)
 ```python
     rest = [
         [6, 2, 8, 5, 3, 0, 0],
@@ -59,15 +58,12 @@ This repository contains Python code implementations for solving optimization pr
     ]
     f_o = "max"  # min or max
 ```
-2. Run the code.
+2. Ejecuta el código.
+### Método Simplex Revisado
+1. Ejecuta el código.
+2. El código te pedirá el número de variables, restricciones y matriz.
 
+- - -
 
-
-### Revised Simplex Method
-1. Run the code.
-2. The code will ask you for the number of variables, restrictions and matrix.
- - - -
-## Contributing
-**This repository is no longer maintained.** However, if you want to contribute, you can fork the repository and make a pull request.
-
-
+## Contribuciones
+**Este repositorio ya no está siendo mantenido.** Sin embargo, si deseas contribuir, puedes hacer un fork del repositorio y enviar un pull request.
