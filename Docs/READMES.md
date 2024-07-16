@@ -19,7 +19,7 @@
  - - - 
 
 ## Descripción
-Este repositorio contiene los códigos del curso de Investigación de Operaciones en la Universidad de Ciencias Informáticas. Los códigos están escritos en Python y se dividen en dos partes:
+Este repositorio contiene implementaciones de código en Python para resolver problemas de optimización en Investigación de Operaciones. Los códigos están divididos en dos partes:
 1. [Algoritmo Húngaro.](https://es.wikipedia.org/wiki/Algoritmo_h%C3%BAngaro)
 2. [Método Simplex Revisado.](https://es.wikipedia.org/wiki/M%C3%A9todo_simplex_revisado)
 

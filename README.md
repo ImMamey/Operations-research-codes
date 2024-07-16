@@ -20,7 +20,7 @@
  - - - 
 
 ## Description
-This repository contains the codes of the Operations Research course at the University of Informatics Sciences. The codes are written in Python and are divided in two:
+This repository contains Python code implementations for solving optimization problems in Operations Research. The codes are divided into two parts:
 1. [Hungarian Algorithm.](https://en.wikipedia.org/wiki/Hungarian_algorithm)
 2. [Revised Simplex Method.](https://en.wikipedia.org/wiki/Revised_simplex_method#:~:text=The%20revised%20simplex%20method%20is%20mathematically%20equivalent%20to%20the%20standard,the%20matrix%20representing%20the%20constraints.)
 
